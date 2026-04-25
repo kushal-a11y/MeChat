@@ -20,12 +20,12 @@ export function MessageBubble({ msg }: { msg: Message }) {
       <div className={cn("flex max-w-[78%] flex-col gap-1", isMe && "items-end")}>
         <div
           className={cn(
-            "relative rounded-2xl px-4 py-2.5 text-sm leading-relaxed shadow-soft",
+            "relative rounded-lg px-3 py-2 text-sm leading-relaxed shadow-soft",
             isMe &&
-              "bg-gradient-bubble-me text-bubble-me-foreground rounded-br-md",
-            !isMe && !isAi && "bg-bubble-them text-bubble-them-foreground rounded-bl-md",
+              "bg-gradient-bubble-me text-bubble-me-foreground rounded-tr-sm",
+            !isMe && !isAi && "bg-bubble-them text-bubble-them-foreground rounded-tl-sm",
             isAi &&
-              "bg-gradient-ai text-ai-foreground rounded-bl-md shadow-violet",
+              "bg-gradient-ai text-ai-foreground rounded-tl-sm shadow-violet",
           )}
         >
           {isAi && (
