@@ -182,6 +182,7 @@ export function AIPanel({ chat, open, onClose, onUseSuggestion, onSchedule, onTo
           </div>
         </section>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

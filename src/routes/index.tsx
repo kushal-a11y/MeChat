@@ -10,6 +10,7 @@ import {
   type Chat,
   type Message,
 } from "@/lib/mock-data";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -36,6 +37,9 @@ function Index() {
   const [activeId, setActiveId] = useState<string>(chats[0].id);
   const [messagesByChat, setMessagesByChat] =
     useState<Record<string, Message[]>>(initialMessages);
+  // mobile view: which pane is visible
+  const [mobileView, setMobileView] = useState<"list" | "chat">("list");
+  const [aiOpen, setAiOpen] = useState(false);
 
   const activeChat = useMemo(
     () => chats.find((c) => c.id === activeId)!,
@@ -50,6 +54,11 @@ function Index() {
     }));
   };
 
+  const handleSelectChat = (id: string) => {
+    setActiveId(id);
+    setMobileView("chat");
+  };
+
   const handleSend = (text: string) => {
     const msg: Message = {
       id: `m-${Date.now()}`,
@@ -61,7 +70,6 @@ function Index() {
     };
     appendMessage(activeId, msg);
 
-    // simulated auto-reply if enabled
     if (activeChat.autoReply) {
       setTimeout(() => {
         const pool = aiSuggestionsByTone[activeChat.tone];
@@ -89,7 +97,10 @@ function Index() {
     });
   };
 
-  const handleUseSuggestion = (text: string) => handleSend(text);
+  const handleUseSuggestion = (text: string) => {
+    handleSend(text);
+    setAiOpen(false);
+  };
 
   const handleSchedule = (text: string, when: Date) => {
     appendMessage(activeId, {
@@ -110,16 +121,35 @@ function Index() {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden">
-      <Sidebar chats={chats} activeId={activeId} onSelect={setActiveId} />
-      <ChatWindow
-        chat={activeChat}
-        messages={activeMessages}
-        onSend={handleSend}
-        onAutoGenerate={handleAutoGenerate}
+    <div className="relative flex h-[100dvh] w-full overflow-hidden">
+      {/* Sidebar — full width on mobile when in list view, fixed width on md+ */}
+      <Sidebar
+        chats={chats}
+        activeId={activeId}
+        onSelect={handleSelectChat}
+        className={cn(mobileView === "chat" ? "hidden md:flex" : "flex")}
       />
+      {/* Chat window — hidden on mobile when list visible */}
+      <div
+        className={cn(
+          "min-w-0 flex-1",
+          mobileView === "list" ? "hidden md:flex" : "flex",
+        )}
+      >
+        <ChatWindow
+          chat={activeChat}
+          messages={activeMessages}
+          onSend={handleSend}
+          onAutoGenerate={handleAutoGenerate}
+          onBack={() => setMobileView("list")}
+          onToggleAIDashboard={() => setAiOpen((v) => !v)}
+          isAIDashboardOpen={aiOpen}
+        />
+      </div>
       <AIPanel
         chat={activeChat}
+        open={aiOpen}
+        onClose={() => setAiOpen(false)}
         onUseSuggestion={handleUseSuggestion}
         onSchedule={handleSchedule}
         onToggleAutoReply={handleToggleAutoReply}
