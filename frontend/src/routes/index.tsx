@@ -137,6 +137,7 @@ function Index() {
         )}
       >
         <ChatWindow
+          key={activeChat.id}
           chat={activeChat}
           messages={activeMessages}
           onSend={handleSend}

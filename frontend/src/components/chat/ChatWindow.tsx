@@ -39,6 +39,11 @@ export function ChatWindow({
   const [draft, setDraft] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Clear draft and close AI panel when switching chats
+  useEffect(() => {
+    setDraft("");
+  }, [chat.id]);
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages.length]);
