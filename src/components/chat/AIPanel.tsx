@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Sparkles, Wand2, Send, RefreshCw, Calendar, Bot, Check } from "lucide-react";
+import { Sparkles, Wand2, Send, RefreshCw, Calendar, Bot, Check, X } from "lucide-react";
 import type { Chat } from "@/lib/mock-data";
 import { aiSuggestionsByTone } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
 interface Props {
   chat: Chat;
+  open: boolean;
+  onClose: () => void;
   onUseSuggestion: (text: string) => void;
   onSchedule: (text: string, when: Date) => void;
   onToggleAutoReply: () => void;
@@ -13,7 +15,7 @@ interface Props {
 
 const tones: Chat["tone"][] = ["Friendly", "Professional", "Witty", "Romantic"];
 
-export function AIPanel({ chat, onUseSuggestion, onSchedule, onToggleAutoReply }: Props) {
+export function AIPanel({ chat, open, onClose, onUseSuggestion, onSchedule, onToggleAutoReply }: Props) {
   const [tone, setTone] = useState<Chat["tone"]>(chat.tone);
   const [scheduleText, setScheduleText] = useState("");
   const [scheduleTime, setScheduleTime] = useState(() => {
@@ -34,19 +36,35 @@ export function AIPanel({ chat, onUseSuggestion, onSchedule, onToggleAutoReply }
     setScheduleText("");
   };
 
+  if (!open) return null;
+
   return (
-    <aside className="hidden h-full w-[340px] flex-col border-l border-border bg-card/40 backdrop-blur-xl xl:flex">
-      <div className="border-b border-border px-5 py-4">
-        <div className="flex items-center gap-2">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-ai shadow-violet">
-            <Sparkles className="h-4 w-4 text-ai-foreground" strokeWidth={2.5} />
+    <>
+      {/* Mobile/tablet overlay backdrop */}
+      <button
+        aria-label="Close AI dashboard"
+        onClick={onClose}
+        className="fixed inset-0 z-40 bg-background/70 backdrop-blur-sm lg:hidden"
+      />
+      <aside className="animate-slide-in-right fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-[380px] flex-col border-l border-border bg-card shadow-soft lg:static lg:z-auto lg:w-[340px] lg:max-w-none lg:shadow-none">
+        <div className="flex items-center justify-between border-b border-border bg-panel px-4 py-3">
+          <div className="flex items-center gap-2">
+            <div className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-ai shadow-violet">
+              <Sparkles className="h-4 w-4 text-ai-foreground" strokeWidth={2.5} />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold">AI Dashboard</h2>
+              <p className="text-[11px] text-muted-foreground">Chat with {chat.name}</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-sm font-bold">AI Studio</h2>
-            <p className="text-[11px] text-muted-foreground">For chat with {chat.name}</p>
-          </div>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <X className="h-4.5 w-4.5" />
+          </button>
         </div>
-      </div>
 
       <div className="flex-1 space-y-6 overflow-y-auto p-5">
         {/* Auto-Reply */}
