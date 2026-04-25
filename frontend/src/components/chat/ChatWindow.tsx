@@ -196,22 +196,19 @@ export function ChatWindow({
               <Paperclip className="h-5 w-5" />
             </button>
           </div>
-          {draft.trim() ? (
-            <button
-              onClick={handleSend}
-              aria-label="Send"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-glow transition-transform hover:scale-105"
-            >
-              <Send className="h-4 w-4" strokeWidth={2.5} />
-            </button>
-          ) : (
-            <button
-              aria-label="Voice message"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-glow transition-transform hover:scale-105"
-            >
-              <Mic className="h-5 w-5" />
-            </button>
-          )}
+          <button
+            onClick={handleSend}
+            aria-label="Send"
+            disabled={!draft.trim()}
+            className={cn(
+              "grid h-10 w-10 shrink-0 place-items-center rounded-full transition-transform hover:scale-105",
+              draft.trim()
+                ? "btn-send"
+                : "bg-muted text-muted-foreground opacity-60 cursor-not-allowed"
+            )}
+          >
+            <Send className="h-4 w-4" strokeWidth={2.5} />
+          </button>
         </div>
       </div>
     </section>

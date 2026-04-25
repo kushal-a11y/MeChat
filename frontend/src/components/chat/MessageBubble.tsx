@@ -16,7 +16,7 @@ export function MessageBubble({ msg }: { msg: Message }) {
   return (
     <div
       className={cn(
-        "flex w-full animate-fade-up",
+        "flex w-full animate-slide-in-right",
         isMe ? "justify-end" : "justify-start",
       )}
     >

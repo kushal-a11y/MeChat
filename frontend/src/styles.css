@@ -1,4 +1,3 @@
-@reference "tailwindcss/theme";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -115,6 +114,24 @@
   }
   .bg-panel {
     background-color: var(--panel);
+  }
+  /* Send button styling for dark mode */
+  .btn-send {
+    background: linear-gradient(180deg, color-mix(in oklch, var(--primary) 100%, black 6%), var(--primary));
+    color: var(--primary-foreground);
+    box-shadow: var(--shadow-glow);
+    border: none;
+  }
+  .btn-send:hover {
+    transform: translateY(-1px) scale(1.03);
+  }
+  .btn-send:focus {
+    outline: 2px solid color-mix(in oklch, var(--ring) 60%, black 20%);
+    outline-offset: 2px;
+  }
+  .composer-textarea::placeholder {
+    color: var(--muted-foreground);
+    opacity: 0.9;
   }
   .shadow-glow {
     box-shadow: var(--shadow-glow);
