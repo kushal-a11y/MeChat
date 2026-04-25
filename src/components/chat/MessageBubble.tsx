@@ -3,7 +3,10 @@ import type { Message } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
 function formatTime(d: Date) {
-  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  // Stable HH:mm in UTC to avoid SSR/CSR hydration mismatch
+  const h = String(d.getUTCHours()).padStart(2, "0");
+  const m = String(d.getUTCMinutes()).padStart(2, "0");
+  return `${h}:${m}`;
 }
 
 export function MessageBubble({ msg }: { msg: Message }) {
@@ -40,12 +43,7 @@ export function MessageBubble({ msg }: { msg: Message }) {
             <>
               <Clock className="h-3 w-3 text-accent" />
               <span className="text-accent">
-                Scheduled · {msg.scheduledFor.toLocaleString([], {
-                  month: "short",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+                Scheduled · {formatTime(msg.scheduledFor)}
               </span>
             </>
           ) : (
