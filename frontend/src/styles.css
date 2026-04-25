@@ -55,6 +55,22 @@
     /* AI assist surfaces */
     --ai: oklch(0.62 0.2 295);
     --ai-foreground: oklch(0.98 0.005 250);
+
+    /* Additional variables */
+    --panel: oklch(0.24 0.012 200);
+    --gradient-primary: linear-gradient(135deg, oklch(0.72 0.16 155), oklch(0.65 0.16 175));
+    --gradient-aurora: radial-gradient(
+        ellipse at top left,
+        oklch(0.66 0.2 295 / 0.18),
+        transparent 55%
+      ),
+      radial-gradient(ellipse at bottom right, oklch(0.72 0.16 155 / 0.18), transparent 55%);
+    --gradient-bubble-me: linear-gradient(135deg, oklch(0.42 0.07 155), oklch(0.38 0.07 160));
+    --gradient-ai: linear-gradient(135deg, oklch(0.66 0.2 295), oklch(0.56 0.22 275));
+    --shadow-glow: 0 10px 40px -10px oklch(0.72 0.16 155 / 0.4);
+    --shadow-violet: 0 10px 40px -10px oklch(0.66 0.2 295 / 0.5);
+    --shadow-soft: 0 8px 30px -12px oklch(0 0 0 / 0.5);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   * {
@@ -63,43 +79,6 @@
 
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-  /* Chat panel header tone (WhatsApp-style flat panel) */
-  --panel: oklch(0.24 0.012 200);
-
-  /* Gradients & shadows */
-  --gradient-primary: linear-gradient(135deg, oklch(0.72 0.16 155), oklch(0.65 0.16 175));
-  --gradient-aurora: radial-gradient(
-      ellipse at top left,
-      oklch(0.66 0.2 295 / 0.18),
-      transparent 55%
-    ),
-    radial-gradient(ellipse at bottom right, oklch(0.72 0.16 155 / 0.18), transparent 55%);
-  --gradient-bubble-me: linear-gradient(135deg, oklch(0.42 0.07 155), oklch(0.38 0.07 160));
-  --gradient-ai: linear-gradient(135deg, oklch(0.66 0.2 295), oklch(0.56 0.22 275));
-
-  --shadow-glow: 0 10px 40px -10px oklch(0.72 0.16 155 / 0.4);
-  --shadow-violet: 0 10px 40px -10px oklch(0.66 0.2 295 / 0.5);
-  --shadow-soft: 0 8px 30px -12px oklch(0 0 0 / 0.5);
-
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dark {
-  --background: oklch(0.18 0.01 200);
-  --foreground: oklch(0.96 0.005 200);
-}
-
-@layer base {
-  * {
-    border-color: var(--color-border);
-  }
-
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
     background-image: var(--gradient-aurora);
     background-attachment: fixed;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
@@ -118,6 +97,157 @@
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+  }
+}
+
+@layer utilities {
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+  .bg-gradient-bubble-me {
+    background-image: var(--gradient-bubble-me);
+  }
+  .bg-gradient-ai {
+    background-image: var(--gradient-ai);
+  }
+  .bg-panel {
+    background-color: var(--panel);
+  }
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  .shadow-violet {
+    box-shadow: var(--shadow-violet);
+  }
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  .text-gradient {
+    background-image: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* WhatsApp-style chat doodle background */
+  .chat-doodle {
+    background-color: oklch(0.2 0.01 200);
+    background-image:
+      radial-gradient(oklch(1 0 0 / 0.025) 1px, transparent 1px),
+      radial-gradient(oklch(1 0 0 / 0.02) 1px, transparent 1px);
+    background-size: 28px 28px, 56px 56px;
+    background-position: 0 0, 14px 14px;
+  }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
+}@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.6rem;
+
+    /* WhatsApp-inspired dark palette */
+    --background: oklch(0.18 0.01 200);
+    --foreground: oklch(0.96 0.005 200);
+
+    --card: oklch(0.23 0.012 200);
+    --card-foreground: oklch(0.96 0.005 200);
+
+    --popover: oklch(0.23 0.012 200);
+    --popover-foreground: oklch(0.96 0.005 200);
+
+    /* Primary: WhatsApp green */
+    --primary: oklch(0.72 0.16 155);
+    --primary-foreground: oklch(0.16 0.02 200);
+
+    --secondary: oklch(0.27 0.012 200);
+    --secondary-foreground: oklch(0.96 0.005 200);
+
+    --muted: oklch(0.25 0.01 200);
+    --muted-foreground: oklch(0.68 0.015 200);
+
+    /* Accent: AI violet (kept for dashboard distinction) */
+    --accent: oklch(0.66 0.2 295);
+    --accent-foreground: oklch(0.98 0.005 250);
+
+    --destructive: oklch(0.65 0.22 25);
+    --destructive-foreground: oklch(0.98 0.005 250);
+
+    --border: oklch(0.3 0.012 200 / 70%);
+    --input: oklch(0.27 0.012 200);
+    --ring: oklch(0.72 0.16 155);
+
+    --sidebar: oklch(0.21 0.012 200);
+    --sidebar-foreground: oklch(0.94 0.005 200);
+    --sidebar-primary: oklch(0.72 0.16 155);
+    --sidebar-primary-foreground: oklch(0.16 0.02 200);
+    --sidebar-accent: oklch(0.26 0.012 200);
+    --sidebar-accent-foreground: oklch(0.96 0.005 200);
+    --sidebar-border: oklch(0.28 0.012 200 / 60%);
+    --sidebar-ring: oklch(0.72 0.16 155);
+
+    /* Chat bubbles — WhatsApp green-tint for me, neutral dark for them */
+    --bubble-me: oklch(0.4 0.07 155);
+    --bubble-me-foreground: oklch(0.97 0.005 200);
+    --bubble-them: oklch(0.27 0.012 200);
+    --bubble-them-foreground: oklch(0.96 0.005 200);
+
+    /* AI assist surfaces */
+    --ai: oklch(0.62 0.2 295);
+    --ai-foreground: oklch(0.98 0.005 250);
+
+    /* Additional variables */
+    --panel: oklch(0.24 0.012 200);
+    --gradient-primary: linear-gradient(135deg, oklch(0.72 0.16 155), oklch(0.65 0.16 175));
+    --gradient-aurora: radial-gradient(
+        ellipse at top left,
+        oklch(0.66 0.2 295 / 0.18),
+        transparent 55%
+      ),
+      radial-gradient(ellipse at bottom right, oklch(0.72 0.16 155 / 0.18), transparent 55%);
+    --gradient-bubble-me: linear-gradient(135deg, oklch(0.42 0.07 155), oklch(0.38 0.07 160));
+    --gradient-ai: linear-gradient(135deg, oklch(0.66 0.2 295), oklch(0.56 0.22 275));
+    --shadow-glow: 0 10px 40px -10px oklch(0.72 0.16 155 / 0.4);
+    --shadow-violet: 0 10px 40px -10px oklch(0.66 0.2 295 / 0.5);
+    --shadow-soft: 0 8px 30px -12px oklch(0 0 0 / 0.5);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-image: var(--gradient-aurora);
+    background-attachment: fixed;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+  }
+}
     background: var(--muted-foreground);
   }
 }
