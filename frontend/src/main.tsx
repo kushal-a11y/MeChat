@@ -1,11 +1,11 @@
-import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
+import { getRouter } from "./router";
+import { RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 
-// Create a new router instance
-const router = createRouter({ routeTree });
+// Get the router instance
+const router = getRouter();
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
