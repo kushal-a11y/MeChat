@@ -1,11 +1,3 @@
----
-
-# 💬 MeChat: AI-Powered Enterprise Chat Platform
-
-> 🚀 *A modern, AI-native, full-stack communication system built for real-time collaboration and intelligent productivity.*
-
----
-
 ## 🌟 Overview
 
 **MeChat** is a high-performance messaging platform that combines **real-time communication** with **AI-driven intelligence**.
